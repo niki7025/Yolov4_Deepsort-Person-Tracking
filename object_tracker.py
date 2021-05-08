@@ -14,6 +14,7 @@ from tensorflow.python.saved_model import tag_constants
 from core.config import cfg
 from PIL import Image
 import glob
+from pathlib import Path
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -94,8 +95,9 @@ def main(_argv):
             vid = cv2.VideoCapture(video_path)
     else:
         try:
+            my_file = Path(videos_folder_path + video_name)
             #check if video in folder videos
-            if  not os.path.isFile(videos_folder_path + video_name):
+            if  my_file.is_file():
                 for filename in glob.glob(pictures_folder_path + '*.jpg'):
                     file_list.append(filename)
                 file_list.sort()
