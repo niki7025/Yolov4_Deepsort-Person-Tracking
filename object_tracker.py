@@ -115,6 +115,7 @@ def main(_argv):
             try:
                 print(videos_folder_path + video_name)
                 vid = cv2.VideoCapture(int(videos_folder_path + video_name))
+                vid.set(CV_CAP_PROP_FOURCC, CV_FOURCC('H', '2', '6', '5'))
             except:
                 vid = cv2.VideoCapture(videos_folder_path + video_name)
         except:
