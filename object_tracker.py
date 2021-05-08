@@ -88,6 +88,7 @@ def main(_argv):
     img_array = []
     # begin video capture
     print(FLAGS.is_video)
+    vid = None
     if FLAGS.is_video:
         try:
             vid = cv2.VideoCapture(int(video_path))
