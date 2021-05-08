@@ -95,6 +95,7 @@ def main(_argv):
             vid = cv2.VideoCapture(video_path)
     else:
         try:
+            video_out = None
             my_file = Path(videos_folder_path + video_name)
             #check if video in folder videos
             if  my_file.is_file():
