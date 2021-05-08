@@ -98,7 +98,7 @@ def main(_argv):
             video_out = None
             my_file = Path(videos_folder_path + video_name)
             #check if video in folder videos
-            if  my_file.is_file():
+            if not my_file.is_file():
                 for filename in glob.glob(pictures_folder_path + '*.jpg'):
                     file_list.append(filename)
                 file_list.sort()
