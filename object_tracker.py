@@ -112,6 +112,7 @@ def main(_argv):
                 video_out.write(img_array[i])  
             video_out.release()
             try:
+                print(videos_folder_path + video_name)
                 vid = cv2.VideoCapture(int(videos_folder_path + video_name))
             except:
                 vid = cv2.VideoCapture(videos_folder_path + video_name)
