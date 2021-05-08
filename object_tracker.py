@@ -83,7 +83,7 @@ def main(_argv):
         saved_model_loaded = tf.saved_model.load(FLAGS.weights, tags=[tag_constants.SERVING])
         infer = saved_model_loaded.signatures['serving_default']
 
-    video_name = 'picture_video.mp4v'
+    video_name = 'picture_video.mp4'
     file_list = []
     img_array = []
     # begin video capture
@@ -108,7 +108,7 @@ def main(_argv):
                     height,width,layers = frame.shape
                     frame_size = (width,height)
                     img_array.append(frame)
-                video_out = cv2.VideoWriter(video_name, cv2.VideoWriter_fourcc(*'mp4v'), 15, frame_size)
+                video_out = cv2.VideoWriter(videos_folder_path + video_name, cv2.VideoWriter_fourcc(*'mp4v'), 15, frame_size)
             for i in range(len(img_array)):
                 video_out.write(img_array[i])  
             video_out.release()
