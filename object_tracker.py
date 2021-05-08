@@ -109,7 +109,7 @@ def main(_argv):
                 vid = cv2.VideoWriter(video_name, cv2.VideoWriter_fourcc(*'DIVX'), 15, frame_size)
             for i in range(len(img_array)):
                 vid.write(img_array[i])  
-            vid.release()
+            # vid.release()
         except:
             print("Unexpected error:", sys.exc_info()[0])
 
