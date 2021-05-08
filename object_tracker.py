@@ -13,6 +13,7 @@ from core.yolov4 import filter_boxes
 from tensorflow.python.saved_model import tag_constants
 from core.config import cfg
 from PIL import Image
+import glob
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -37,6 +38,9 @@ flags.DEFINE_float('score', 0.50, 'score threshold')
 flags.DEFINE_boolean('dont_show', False, 'dont show video output')
 flags.DEFINE_boolean('info', False, 'show detailed info of tracked objects')
 flags.DEFINE_boolean('count', False, 'count objects being tracked on screen')
+flags.DEFINE_boolean('is_video', False, 'is video or pictures')
+flags.DEFINE_string('pictures_path','/data/pictures/','path to input pictures folder')
+flags.DEFINE_string('videos_path', '/data/video/', 'path to input videos folder')
 
 def main(_argv):
     # Definition of the parameters
@@ -58,7 +62,12 @@ def main(_argv):
     session = InteractiveSession(config=config)
     STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config(FLAGS)
     input_size = FLAGS.size
-    video_path = FLAGS.video
+    # check if video
+    if FLAGS.is_video:
+        video_path = FLAGS.video
+    else:
+        pictures_folder_path = FLAGS.pictures_path
+        videos_folder_path = FLAGS.videos_path
 
     # load tflite model if flag is set
     if FLAGS.framework == 'tflite':
@@ -73,11 +82,31 @@ def main(_argv):
         saved_model_loaded = tf.saved_model.load(FLAGS.weights, tags=[tag_constants.SERVING])
         infer = saved_model_loaded.signatures['serving_default']
 
+    video_name = 'picture_video.mp4'
+    file_list = []
+    img_array = []
     # begin video capture
-    try:
-        vid = cv2.VideoCapture(int(video_path))
-    except:
-        vid = cv2.VideoCapture(video_path)
+    if FLAGS.is_video:
+        try:
+            vid = cv2.VideoCapture(int(video_path))
+        except:
+            vid = cv2.VideoCapture(video_path)
+    else:
+        try:
+            #check if video in folder videos
+            if  not os.path.isFile(videos_folder_path + video_name):
+                for filename in glob.glob(pictures_folder_path + '*.jpg'):
+                    file_list.append(filename)
+                file_list.sort()
+                for i in file_list:
+                    frame = cv2.imread(i)
+                    height,width,layers = frame.shape
+                    frame_size = (width,height)
+                    img_array.append(frame)
+                vid = cv2.VideoWriter(video_name, cv2.VideoWriter_fourcc(*’DIVX’), 15, frame_size)
+            for i in range(len(img_array)):
+                vid.write(img_array[i])  
+            vid.release()
 
     out = None
 
@@ -91,7 +120,7 @@ def main(_argv):
         out = cv2.VideoWriter(FLAGS.output, codec, fps, (width, height))
 
     frame_num = 0
-    # while video is running
+    # while video is running OR there are pictures in dir
     while True:
         return_value, frame = vid.read()
         if return_value:
