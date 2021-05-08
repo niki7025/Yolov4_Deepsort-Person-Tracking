@@ -107,7 +107,6 @@ def main(_argv):
             for i in range(len(img_array)):
                 vid.write(img_array[i])  
             vid.release()
-
     out = None
 
     # get video ready to save locally if flag is set
