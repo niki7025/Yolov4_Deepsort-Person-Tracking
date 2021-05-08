@@ -83,7 +83,7 @@ def main(_argv):
         saved_model_loaded = tf.saved_model.load(FLAGS.weights, tags=[tag_constants.SERVING])
         infer = saved_model_loaded.signatures['serving_default']
 
-    video_name = 'picture_video.avi'
+    video_name = 'picture_video.mp4v'
     file_list = []
     img_array = []
     # begin video capture
@@ -108,13 +108,14 @@ def main(_argv):
                     height,width,layers = frame.shape
                     frame_size = (width,height)
                     img_array.append(frame)
-                video_out = cv2.VideoWriter(video_name, cv2.VideoWriter_fourcc(*'DivX'), 15, frame_size)
+                video_out = cv2.VideoWriter(video_name, cv2.VideoWriter_fourcc(*'mp4v'), 15, frame_size)
             for i in range(len(img_array)):
                 video_out.write(img_array[i])  
             video_out.release()
             try:
                 print(videos_folder_path + video_name)
                 vid = cv2.VideoCapture(int(videos_folder_path + video_name))
+                vid.set(CV_CAP_PROP_FOURCC, CV_FOURCC('H', '2', '6', '5'))
             except:
                 vid = cv2.VideoCapture(videos_folder_path + video_name)
         except:
