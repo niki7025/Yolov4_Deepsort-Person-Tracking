@@ -109,13 +109,12 @@ def main(_argv):
                     frame_size = (width,height)
                     img_array.append(frame)
                 video_out = cv2.VideoWriter(videos_folder_path + video_name, cv2.VideoWriter_fourcc(*'mp4v'), 15, frame_size)
-            for i in range(len(img_array)):
-                video_out.write(img_array[i])  
-            video_out.release()
+                for i in range(len(img_array)):
+                    video_out.write(img_array[i])  
+                video_out.release()
             try:
                 print(videos_folder_path + video_name)
                 vid = cv2.VideoCapture(int(videos_folder_path + video_name))
-                vid.set(CV_CAP_PROP_FOURCC, CV_FOURCC('H', '2', '6', '5'))
             except:
                 vid = cv2.VideoCapture(videos_folder_path + video_name)
         except:
