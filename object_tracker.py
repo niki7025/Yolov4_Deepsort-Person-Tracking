@@ -109,7 +109,8 @@ def main(_argv):
                     img_array.append(frame)
                 video_out = cv2.VideoWriter(video_name, cv2.VideoWriter_fourcc(*'DIVX'), 15, frame_size)
             for i in range(len(img_array)):
-                video_out.write(img_array[i])  
+                video_out.write(img_array[i]) 
+                print(img_array[i]) 
             video_out.release()
             try:
                 vid = cv2.VideoCapture(int(videos_folder_path + video_name))
