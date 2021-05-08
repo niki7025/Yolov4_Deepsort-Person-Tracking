@@ -103,7 +103,7 @@ def main(_argv):
                     height,width,layers = frame.shape
                     frame_size = (width,height)
                     img_array.append(frame)
-                vid = cv2.VideoWriter(video_name, cv2.VideoWriter_fourcc(*’DIVX’), 15, frame_size)
+                vid = cv2.VideoWriter(video_name, cv2.VideoWriter_fourcc(*'DIVX'), 15, frame_size)
             for i in range(len(img_array)):
                 vid.write(img_array[i])  
             vid.release()
