@@ -86,6 +86,7 @@ def main(_argv):
     file_list = []
     img_array = []
     # begin video capture
+    print(FLAGS.is_video)
     if FLAGS.is_video:
         try:
             vid = cv2.VideoCapture(int(video_path))
