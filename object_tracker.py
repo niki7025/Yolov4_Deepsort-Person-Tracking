@@ -83,7 +83,7 @@ def main(_argv):
         saved_model_loaded = tf.saved_model.load(FLAGS.weights, tags=[tag_constants.SERVING])
         infer = saved_model_loaded.signatures['serving_default']
 
-    video_name = 'picture_video.mp4'
+    video_name = 'picture_video.mp4v'
     file_list = []
     img_array = []
     # begin video capture
