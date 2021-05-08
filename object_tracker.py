@@ -108,7 +108,6 @@ def main(_argv):
                 vid.write(img_array[i])  
             vid.release()
     out = None
-
     # get video ready to save locally if flag is set
     if FLAGS.output:
         # by default VideoCapture returns float instead of int
