@@ -102,7 +102,7 @@ def main(_argv):
         frame = cv2.imread(file_list[frame_num])
         height,width,layers = frame.shape
         frame_size = (width,height)
-        if frame:
+        if frame is not None:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             image = Image.fromarray(frame)
         else:
