@@ -7,15 +7,6 @@ WORKDIR /app
 
 COPY . ./
 
-RUN pip3 install -U \
-    pip \
-    setuptools \
-    wheel && \
-    pip3 install \
-    -r requirements.txt \
-    && \
-    rm -rf ~/.cache/pip
-
 # Needed for accessing Jetpack 4.4
 COPY  /docker-requirements/nvidia-l4t-apt-source.list /etc/apt/sources.list.d/nvidia-l4t-apt-source.list
 COPY  /docker-requirements/jetson-ota-public.asc /etc/apt/trusted.gpg.d/jetson-ota-public.asc
@@ -30,6 +21,15 @@ RUN apt-get update && \
     zip \
     libjpeg8-dev && \ 
     rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install -U \
+    pip \
+    setuptools \
+    wheel && \
+    pip3 install \
+    -r requirements.txt \
+    && \
+    rm -rf ~/.cache/pip
 
 
 # ============================================
