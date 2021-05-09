@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/l4t-tensorflow:r32.4.4-tf2.3-py3
+FROM nvcr.io/nvidia/l4t-pytorch:r32.5.0-pth1.7-py3
 # tensorflow deleted from requirements
 RUN echo "Build our Container based on L4T Tensorflow"
 RUN nvcc --version
