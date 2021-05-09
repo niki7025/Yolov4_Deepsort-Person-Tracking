@@ -99,7 +99,7 @@ def main(_argv):
         out = cv2.VideoWriter(FLAGS.output, codec, fps, (width, height))
 
     frame_num = 0
-    print('Numer of files:' + len(file_list))
+    print('Number of files:' + len(file_list))
     # while there are pictures in dir
     for f in file_list:
         frame = cv2.imread(f)
@@ -243,6 +243,7 @@ def main(_argv):
         if FLAGS.output:
             if FLAGS.output_pictures:
                 # cv2.imwrite(os.path.join(FLAGS.output, f.replace(pictures_folder_path,'')), img)
+                print("Test")
             else:
                 out.write(result)
         if cv2.waitKey(1) & 0xFF == ord('q'): break
