@@ -40,7 +40,7 @@ flags.DEFINE_boolean('dont_show', False, 'dont show video output')
 flags.DEFINE_boolean('info', False, 'show detailed info of tracked objects')
 flags.DEFINE_boolean('count', False, 'count objects being tracked on screen')
 flags.DEFINE_string('pictures_path','/data/pictures/','path to input pictures folder')
-flags.DEFINE_boolean('output_pictures',False,'output pictures')
+flags.DEFINE_boolean('is_output_pictures',False,'output pictures')
 flags.DEFINE_string('output_pictures', './outputs/','path for pictures output')
 
 def main(_argv):
@@ -241,7 +241,7 @@ def main(_argv):
         # if output flag is set, save video file
         # TODO Save picture to folder
         if FLAGS.output:
-            if FLAGS.output_pictures:
+            if FLAGS.is_output_pictures:
                 f.replace(pictures_folder_path,'')
                 cv2.imwrite(FLAGS.output_pictures + f, result)
                 print("Test")
