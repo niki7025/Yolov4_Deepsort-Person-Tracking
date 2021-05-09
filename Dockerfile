@@ -32,7 +32,7 @@ RUN pip3 install -U \
     rm -rf ~/.cache/pip
 
 WORKDIR /data/
-RUN wget "https://www.dropbox.com/s/nzmibytp2hmv666/yolov3_tiny_best.pt"
+RUN wget "https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights"
 
 
 # ============================================
