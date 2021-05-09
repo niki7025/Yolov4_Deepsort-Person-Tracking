@@ -1,6 +1,6 @@
 FROM nvcr.io/nvidia/l4t-tensorflow:r32.4.4-tf2.3-py3
 # tensorflow deleted from requirements
-RUN echo "Build our Container based on L4T Pytorch"
+RUN echo "Build our Container based on L4T Tensorflow"
 RUN nvcc --version
 
 WORKDIR /app
@@ -16,18 +16,33 @@ RUN pip3 install -U \
     && \
     rm -rf ~/.cache/pip
 
+# Needed for accessing Jetpack 4.4
+COPY  /docker-requirements/nvidia-l4t-apt-source.list /etc/apt/sources.list.d/nvidia-l4t-apt-source.list
+COPY  /docker-requirements/jetson-ota-public.asc /etc/apt/trusted.gpg.d/jetson-ota-public.asc
 
-
-# INSTALL OPENCV
-RUN echo "deb https://repo.download.nvidia.com/jetson/common r32.4 main" > /etc/apt/sources.list.d/nvidia-l4t-apt-source.list && \
-    apt-get update && \
+RUN apt-get update && \ 
+    apt-get install -y libopencv-python libboost-python-dev libboost-thread-dev && \
     apt-get install -y --no-install-recommends \
-    libopencv-python \
-    && rm /etc/apt/sources.list.d/nvidia-l4t-apt-source.list \
-    && rm -rf /var/lib/apt/lists/*   
+    python3-pip \
+    python3-dev \
+    build-essential \
+    zlib1g-dev \
+    zip \
+    libjpeg8-dev && \ 
+    rm -rf /var/lib/apt/lists/*
+
 
 # ============================================
 # END
+
+# INSTALL OPENCV
+# RUN echo "deb https://repo.download.nvidia.com/jetson/common r32.4 main" > /etc/apt/sources.list.d/nvidia-l4t-apt-source.list && \
+#     apt-get update && \
+#     apt-get install -y --no-install-recommends \
+#     libopencv-python \
+#     && rm /etc/apt/sources.list.d/nvidia-l4t-apt-source.list \
+#     && rm -rf /var/lib/apt/lists/*   
+
 
 # --------------------------------------
 # Test code 
