@@ -31,6 +31,9 @@ RUN pip3 install -U \
     && \
     rm -rf ~/.cache/pip
 
+WORKDIR /data/
+RUN wget "https://www.dropbox.com/s/nzmibytp2hmv666/yolov3_tiny_best.pt"
+
 
 # ============================================
 # END
