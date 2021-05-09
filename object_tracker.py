@@ -99,7 +99,7 @@ def main(_argv):
         out = cv2.VideoWriter(FLAGS.output, codec, fps, (width, height))
 
     frame_num = 0
-    print(len(file_list))
+    print('Numer of files:' + len(file_list))
     # while there are pictures in dir
     for f in file_list:
         frame = cv2.imread(f)
