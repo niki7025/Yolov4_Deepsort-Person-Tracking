@@ -32,7 +32,7 @@ flags.DEFINE_integer('size', 416, 'resize images to')
 flags.DEFINE_boolean('tiny', False, 'yolo or yolo-tiny')
 flags.DEFINE_string('model', 'yolov4', 'yolov3 or yolov4')
 flags.DEFINE_string('video', './data/video/test.mp4', 'path to input video or set to 0 for webcam')
-flags.DEFINE_string('output', None, 'path to output video')
+flags.DEFINE_string('output', None, 'path to output')
 flags.DEFINE_string('output_format', 'XVID', 'codec used in VideoWriter when saving video to file')
 flags.DEFINE_float('iou', 0.45, 'iou threshold')
 flags.DEFINE_float('score', 0.50, 'score threshold')
@@ -40,6 +40,7 @@ flags.DEFINE_boolean('dont_show', False, 'dont show video output')
 flags.DEFINE_boolean('info', False, 'show detailed info of tracked objects')
 flags.DEFINE_boolean('count', False, 'count objects being tracked on screen')
 flags.DEFINE_string('pictures_path','/data/pictures/','path to input pictures folder')
+flags.DEFINE_boolean('output_pictures',False,'output pictures')
 
 def main(_argv):
     # Definition of the parameters
@@ -82,6 +83,7 @@ def main(_argv):
     try:
         for filename in glob.glob(pictures_folder_path + '*.jpg'):
             file_list.append(filename)
+            print(filename)
         file_list.sort()   
     except:
         print("Unexpected error:", sys.exc_info()[0])
@@ -237,11 +239,12 @@ def main(_argv):
             cv2.imshow("Output Video", result)
         
         # if output flag is set, save video file
-
-
         # TODO Save picture to folder
         if FLAGS.output:
-            out.write(result)
+            if FLAGS.output_pictures:
+                # cv2.imwrite(os.path.join(FLAGS.output, f.replace(pictures_folder_path,'')), img)
+            else:
+                out.write(result)
         if cv2.waitKey(1) & 0xFF == ord('q'): break
     cv2.destroyAllWindows()
     print("All pictures processed")
