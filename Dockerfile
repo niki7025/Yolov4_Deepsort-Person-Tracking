@@ -1,4 +1,5 @@
-FROM nvcr.io/nvidia/l4t-tensorflow:r32.5.0-tf2.3-py3
+FROM nvcr.io/nvidia/l4t-tensorflow:r32.4.4-tf2.3-py3
+# tensorflow deleted from requirements
 RUN echo "Build our Container based on L4T Pytorch"
 RUN nvcc --version
 
@@ -15,7 +16,27 @@ RUN pip3 install -U \
     && \
     rm -rf ~/.cache/pip
 
-COPY  nvidia-l4t-apt-source.list /etc/apt/sources.list.d/nvidia-l4t-apt-source.list
+
+
+# INSTALL OPENCV
+RUN echo "deb https://repo.download.nvidia.com/jetson/common r32.4 main" > /etc/apt/sources.list.d/nvidia-l4t-apt-source.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+    libopencv-python \
+    && rm /etc/apt/sources.list.d/nvidia-l4t-apt-source.list \
+    && rm -rf /var/lib/apt/lists/*   
+
+# ============================================
+# END
+
+# --------------------------------------
+# Test code 
+# -------------------------------------
+
+# CMD ["python3", "object_tracker.py"]
+
+# COPY  nvidia-l4t-apt-source.list /etc/apt/sources.list.d/nvidia-l4t-apt-source.list
+# COPY jetson-ota-public.asc /etc/apt/trusted.gpg.d/jetson-ota-public.asc
 
 # -----------------
 # INSTALL TENSORFLOW
@@ -48,21 +69,6 @@ COPY  nvidia-l4t-apt-source.list /etc/apt/sources.list.d/nvidia-l4t-apt-source.l
 # RUN wget --quiet --show-progress --progress=bar:force:noscroll --no-check-certificate ${TENSORFLOW_URL} -O ${TENSORFLOW_WHL} && \
 #     pip3 install ${TENSORFLOW_WHL} --verbose && \
 #     rm ${TENSORFLOW_WHL}
-
-# INSTALL OPENCV
-COPY jetson-ota-public.asc /etc/apt/trusted.gpg.d/jetson-ota-public.asc
-RUN echo "deb https://repo.download.nvidia.com/jetson/common r32.4 main" > /etc/apt/sources.list.d/nvidia-l4t-apt-source.list && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-    libopencv-python \
-    && rm /etc/apt/sources.list.d/nvidia-l4t-apt-source.list \
-    && rm -rf /var/lib/apt/lists/*   
-
-
-
-# CMD ["python3", "object_tracker.py"]
-
-
 
 # FROM continuumio/miniconda3
 
