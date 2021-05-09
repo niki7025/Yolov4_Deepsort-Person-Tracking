@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/l4t-pytorch:r32.5.0-pth1.7-py3
+FROM nvcr.io/nvidia/l4t-tensorflow:r32.5.0-tf2.3-py3
 # tensorflow deleted from requirements
 RUN echo "Build our Container based on L4T Tensorflow"
 RUN nvcc --version
@@ -8,8 +8,8 @@ WORKDIR /app
 COPY . ./
 
 # Needed for accessing Jetpack 4.4
-COPY  /docker-requirements/nvidia-l4t-apt-source.list /etc/apt/sources.list.d/nvidia-l4t-apt-source.list
-COPY  /docker-requirements/jetson-ota-public.asc /etc/apt/trusted.gpg.d/jetson-ota-public.asc
+#COPY  /docker-requirements/nvidia-l4t-apt-source.list /etc/apt/sources.list.d/nvidia-l4t-apt-source.list
+#COPY  /docker-requirements/jetson-ota-public.asc /etc/apt/trusted.gpg.d/jetson-ota-public.asc
 
 RUN apt-get update && \ 
     apt-get install -y libopencv-python libboost-python-dev libboost-thread-dev && \
