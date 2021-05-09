@@ -242,8 +242,8 @@ def main(_argv):
         # TODO Save picture to folder
         if FLAGS.output:
             if FLAGS.is_output_pictures:
-                f.replace(pictures_folder_path,'')
-                path_output_image = FLAGS.output_pictures + f
+                picture_name = f.replace(pictures_folder_path,'')
+                path_output_image = FLAGS.output_pictures + picture_name
                 print(path_output_image)
                 cv2.imwrite(path_output_image, result)
             else:
