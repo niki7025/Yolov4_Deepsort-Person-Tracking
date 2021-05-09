@@ -243,8 +243,9 @@ def main(_argv):
         if FLAGS.output:
             if FLAGS.is_output_pictures:
                 f.replace(pictures_folder_path,'')
-                cv2.imwrite(FLAGS.output_pictures + f, result)
-                print("Test")
+                path_output_image = FLAGS.output_pictures + f
+                print(path_output_image)
+                cv2.imwrite(path_output_image, result)
             else:
                 out.write(result)
         if cv2.waitKey(1) & 0xFF == ord('q'): break
