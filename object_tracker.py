@@ -97,17 +97,18 @@ def main(_argv):
         out = cv2.VideoWriter(FLAGS.output, codec, fps, (width, height))
 
     frame_num = 0
+    print(len(file_list))
     # while there are pictures in dir
-    while True:
-        frame = cv2.imread(file_list[frame_num])
+    for f in file_list:
+        frame = cv2.imread(f)
         height,width,layers = frame.shape
         frame_size = (width,height)
         if frame is not None:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             image = Image.fromarray(frame)
-        else:
-            print('Video has ended or failed, try a different video format!')
-            break
+        # else:
+        #     print('Video has ended or failed, try a different video format!')
+        #     break
         frame_num +=1
         print('Frame #: ', frame_num)
         frame_size = frame.shape[:2]
@@ -243,6 +244,7 @@ def main(_argv):
             out.write(result)
         if cv2.waitKey(1) & 0xFF == ord('q'): break
     cv2.destroyAllWindows()
+    print("All pictures processed")
 
 if __name__ == '__main__':
     try:
