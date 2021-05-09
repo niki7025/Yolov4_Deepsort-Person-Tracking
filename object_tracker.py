@@ -39,9 +39,7 @@ flags.DEFINE_float('score', 0.50, 'score threshold')
 flags.DEFINE_boolean('dont_show', False, 'dont show video output')
 flags.DEFINE_boolean('info', False, 'show detailed info of tracked objects')
 flags.DEFINE_boolean('count', False, 'count objects being tracked on screen')
-flags.DEFINE_boolean('is_video', False, 'is video or pictures')
 flags.DEFINE_string('pictures_path','/data/pictures/','path to input pictures folder')
-flags.DEFINE_string('videos_path', '/data/video/', 'path to input videos folder')
 
 def main(_argv):
     # Definition of the parameters
@@ -63,13 +61,7 @@ def main(_argv):
     session = InteractiveSession(config=config)
     STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config(FLAGS)
     input_size = FLAGS.size
-    # check if video
-    if FLAGS.is_video:
-        video_path = FLAGS.video
-    else:
-        pictures_folder_path = FLAGS.pictures_path
-        videos_folder_path = FLAGS.videos_path
-
+    
     # load tflite model if flag is set
     if FLAGS.framework == 'tflite':
         interpreter = tf.lite.Interpreter(model_path=FLAGS.weights)
@@ -83,58 +75,34 @@ def main(_argv):
         saved_model_loaded = tf.saved_model.load(FLAGS.weights, tags=[tag_constants.SERVING])
         infer = saved_model_loaded.signatures['serving_default']
 
-    video_name = 'picture_video.mp4'
+    
     file_list = []
-    img_array = []
-    # begin video capture
-    print(FLAGS.is_video)
-    vid = None
-    if FLAGS.is_video:
-        try:
-            vid = cv2.VideoCapture(int(video_path))
-        except:
-            vid = cv2.VideoCapture(video_path)
-    else:
-        try:
-            video_out = None
-            my_file = Path(videos_folder_path + video_name)
-            #check if video in folder videos
-            if not my_file.is_file():
-                for filename in glob.glob(pictures_folder_path + '*.jpg'):
-                    file_list.append(filename)
-                file_list.sort()
-                for i in file_list:
-                    frame = cv2.imread(i)
-                    height,width,layers = frame.shape
-                    frame_size = (width,height)
-                    img_array.append(frame)
-                video_out = cv2.VideoWriter(videos_folder_path + video_name, cv2.VideoWriter_fourcc(*'mp4v'), 15, frame_size)
-                for i in range(len(img_array)):
-                    video_out.write(img_array[i])  
-                video_out.release()
-            try:
-                print(videos_folder_path + video_name)
-                vid = cv2.VideoCapture(int(videos_folder_path + video_name))
-            except:
-                vid = cv2.VideoCapture(videos_folder_path + video_name)
-        except:
-            print("Unexpected error:", sys.exc_info()[0])
+    pictures_folder_path = FLAGS.pictures_path
+    # begin picture read and sort
+    try:
+        for filename in glob.glob(pictures_folder_path + '*.jpg'):
+            file_list.append(filename)
+        file_list.sort()   
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
 
     out = None
     # get video ready to save locally if flag is set
     if FLAGS.output:
-        # by default VideoCapture returns float instead of int
-        width = int(vid.get(cv2.CAP_PROP_FRAME_WIDTH))
-        height = int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        fps = int(vid.get(cv2.CAP_PROP_FPS))
+        # read first picture and get height,width,layers for output video
+        frame = cv2.imread(file_list[0])
+        height,width,layers = frame.shape
+        fps = 30
         codec = cv2.VideoWriter_fourcc(*FLAGS.output_format)
         out = cv2.VideoWriter(FLAGS.output, codec, fps, (width, height))
 
     frame_num = 0
-    # while video is running OR there are pictures in dir
+    # while there are pictures in dir
     while True:
-        return_value, frame = vid.read()
-        if return_value:
+        frame = cv2.imread(file_list[frame_num])
+        height,width,layers = frame.shape
+        frame_size = (width,height)
+        if frame:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             image = Image.fromarray(frame)
         else:
@@ -268,6 +236,9 @@ def main(_argv):
             cv2.imshow("Output Video", result)
         
         # if output flag is set, save video file
+
+
+        # TODO Save picture to folder
         if FLAGS.output:
             out.write(result)
         if cv2.waitKey(1) & 0xFF == ord('q'): break
