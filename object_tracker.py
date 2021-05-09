@@ -83,7 +83,6 @@ def main(_argv):
     try:
         for filename in glob.glob(pictures_folder_path + '*.jpg'):
             file_list.append(filename)
-            print(filename)
         file_list.sort()   
     except:
         print("Unexpected error:", sys.exc_info()[0])
@@ -242,7 +241,7 @@ def main(_argv):
         # TODO Save picture to folder
         if FLAGS.output:
             if FLAGS.output_pictures:
-                # cv2.imwrite(os.path.join(FLAGS.output, f.replace(pictures_folder_path,'')), img)
+                cv2.imwrite(os.path.join(FLAGS.output, f.replace(pictures_folder_path,'')), result)
                 print("Test")
             else:
                 out.write(result)
