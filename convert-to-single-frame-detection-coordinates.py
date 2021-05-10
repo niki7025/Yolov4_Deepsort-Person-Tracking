@@ -16,13 +16,14 @@ def main(_argv):
     print(len(lines))
     for line in lines:
         # get first char from line
-        firstCharacter = line[:1]
-        if current_number_on_start_of_line != firstCharacter:
-            current_number_on_start_of_line = firstCharacter
-            file_output = open(output_folder_path + f'{int(firstCharacter):06}','w')
+        splited = line.split(',',1)
+        number = splited[0]
+        if current_number_on_start_of_line != number:
+            current_number_on_start_of_line = number
+            file_output = open(output_folder_path + f'{int(number):06}' + '.txt','a')
             file_output.write(line)
         else:
-            file_output = open(output_folder_path + f'{int(firstCharacter):06}','w')
+            file_output = open(output_folder_path + f'{int(number):06}'  + '.txt','a')
             file_output.write(line)
 
 
