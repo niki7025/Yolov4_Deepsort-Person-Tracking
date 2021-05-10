@@ -26,4 +26,8 @@ def main(_argv):
             file_output.write(line)
 
 
-        
+if __name__ == '__main__':
+    try:
+        app.run(main)
+    except SystemExit:
+        pass
