@@ -21,10 +21,10 @@ def main(_argv):
         if current_number_on_start_of_line != number:
             current_number_on_start_of_line = number
             file_output = open(output_folder_path + f'{int(number):06}' + '.txt','a')
-            file_output.write(line)
+            file_output.write(splited[1])
         else:
             file_output = open(output_folder_path + f'{int(number):06}'  + '.txt','a')
-            file_output.write(line)
+            file_output.write(splited[1])
 
 
 if __name__ == '__main__':
