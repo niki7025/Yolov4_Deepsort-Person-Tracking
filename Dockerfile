@@ -24,6 +24,7 @@ RUN apt-get update && \
 
 RUN pip3 install -U \
     pip \
+    pip install --upgrade pip \
     setuptools \
     wheel && \
     pip3 install \
