@@ -28,7 +28,7 @@ RUN pip3 install -U \
     setuptools \
     wheel && \
     pip3 install \
-    -r requirements-gpu.txt \
+    -r requirements.txt \
     && \
     rm -rf ~/.cache/pip
 
