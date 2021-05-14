@@ -19,15 +19,16 @@ RUN apt-get update && \
     build-essential \
     zlib1g-dev \
     zip \
+    python3-setuptools \
     libjpeg8-dev && \ 
     rm -rf /var/lib/apt/lists/*
 
 RUN pip3 install -U \
     pip \
     setuptools \
+    matplotlib \
     wheel && \
     pip3 install \
-    matplotlib \
     -r requirements.txt \
     && \
     rm -rf ~/.cache/pip
