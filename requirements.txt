@@ -3,5 +3,4 @@ lxml
 tqdm
 absl-py
 easydict
-matplotlib
 pillow
