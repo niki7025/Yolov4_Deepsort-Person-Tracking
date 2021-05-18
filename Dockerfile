@@ -26,7 +26,12 @@ RUN apt-get update && \
 RUN pip3 install -U \
     pip \
     setuptools \
-    matplotlib \
+    && \
+    rm -rf ~/.cache/pip
+
+RUN pip install -U matplotlib
+
+RUN pip3 install -U \
     wheel && \
     pip3 install \
     -r requirements.txt \
