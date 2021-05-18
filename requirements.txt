@@ -4,3 +4,4 @@ tqdm
 absl-py
 easydict
 pillow
+numpy
