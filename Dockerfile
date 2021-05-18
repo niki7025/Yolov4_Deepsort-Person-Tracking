@@ -26,17 +26,13 @@ RUN apt-get update && \
 RUN pip3 install -U \
     pip \
     setuptools \
-    && \
-    rm -rf ~/.cache/pip
-
-RUN pip install -U matplotlib
-
-RUN pip3 install -U \
     wheel && \
     pip3 install \
     -r requirements.txt \
     && \
     rm -rf ~/.cache/pip
+
+RUN pip install -U matplotlib
 
 
 RUN apt-get install libhdf5-serial-dev hdf5-tools libhdf5-dev zlib1g-dev zip libjpeg8-dev liblapack-dev libblas-dev gfortran
