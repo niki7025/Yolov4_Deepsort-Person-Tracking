@@ -7,7 +7,7 @@ WORKDIR /app
 
 COPY . ./
 
-# Needed for accessing Jetpack 4.4
+# Needed for accessing Jetpack 4.5
 COPY  /docker-requirements/nvidia-l4t-apt-source.list /etc/apt/sources.list.d/nvidia-l4t-apt-source.list
 COPY  /docker-requirements/jetson-ota-public.asc /etc/apt/trusted.gpg.d/jetson-ota-public.asc
 
