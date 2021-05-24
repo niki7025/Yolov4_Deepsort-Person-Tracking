@@ -3,6 +3,6 @@ opencv-python==4.1.1.26
 lxml
 tqdm
 absl-py
-matplotlib
+matplotlib==3.4.2
 easydict
 pillow

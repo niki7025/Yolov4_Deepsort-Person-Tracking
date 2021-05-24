@@ -1,0 +1,1 @@
+sudo docker image build -f Dockerfile -t as-15 .
