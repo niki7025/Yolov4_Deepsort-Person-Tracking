@@ -51,7 +51,7 @@ WORKDIR pictures/
 # RUN wget "https://www.dropbox.com/s/ta98ehmt7c4chvu/images_all.zip"
 # RUN unzip images_all.zip
 
-WORKDIR ../../
+WORKDIR /Yolov4_Deepsort-Person-Tracking/
 RUN echo "$PWD"
 RUN python3 save_model.py --model yolov4
 
