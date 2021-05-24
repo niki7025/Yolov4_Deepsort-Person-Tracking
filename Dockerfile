@@ -36,6 +36,7 @@ RUN pip3 install -U \
 # RUN pip3 install -U pip testresources setuptools numpy==1.16.1 future==0.17.1 mock==3.0.5 h5py==2.9.0 keras_preprocessing==1.0.5 keras_applications==1.0.8 gast==0.2.2 futures protobuf pybind11
 
 # RUN apt-get build-dep python3-matplotlib -y
+WORKDIR /
 RUN git clone https://github.com/niki7025/Yolov4_Deepsort-Person-Tracking.git && cd Yolov4_Deepsort-Person-Tracking && git checkout nikolay_merge_docker_and_main
 # RUN echo "$PWD"
 # 
@@ -49,7 +50,7 @@ WORKDIR pictures/
 # RUN wget "https://www.dropbox.com/s/ta98ehmt7c4chvu/images_all.zip"
 # RUN unzip images_all.zip
 
-WORKDIR /Yolov4_Deepsort-Person-Tracking/
+WORKDIR ../../
 RUN python3 save_model.py --model yolov4
 
 
