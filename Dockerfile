@@ -37,7 +37,9 @@ RUN pip3 install -U \
 
 # RUN apt-get build-dep python3-matplotlib -y
 RUN git clone https://github.com/niki7025/Yolov4_Deepsort-Person-Tracking.git
+RUN echo "$PWD"
 WORKDIR /Yolov4_Deepsort-Person-Tracking/
+RUN echo "$PWD"
 RUN git pull
 RUN git checkout nikolay_merge_docker_and_main
 
