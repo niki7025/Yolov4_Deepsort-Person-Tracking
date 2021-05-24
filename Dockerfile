@@ -48,7 +48,7 @@ RUN echo "$PWD"
 RUN wget "https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights"
 
 WORKDIR pictures/
-RUN wget "https://drive.google.com/u/0/uc?export=download&confirm=7Zc8&id=1qXAwz2GWWRcUn4EKa14FdRwJDyowrbtq"
+RUN wget "https://www.dropbox.com/s/ta98ehmt7c4chvu/images_all.zip"
 RUN unzip images_all.zip
 
 WORKDIR ../../
