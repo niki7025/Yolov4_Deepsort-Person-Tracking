@@ -12,7 +12,7 @@ COPY  /docker-requirements/nvidia-l4t-apt-source.list /etc/apt/sources.list.d/nv
 COPY  /docker-requirements/jetson-ota-public.asc /etc/apt/trusted.gpg.d/jetson-ota-public.asc
 
 RUN apt-get update && \ 
-    apt-get install -y git libopencv-python libboost-python-dev libboost-thread-dev && \
+    apt-get install -y git unzip libopencv-python libboost-python-dev libboost-thread-dev && \
     apt-get install -y --no-install-recommends \
     python3-pip \
     python3-dev \
