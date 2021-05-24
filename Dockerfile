@@ -48,10 +48,11 @@ RUN echo "$PWD"
 RUN wget "https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights"
 
 WORKDIR pictures/
-RUN wget "https://www.dropbox.com/s/ta98ehmt7c4chvu/images_all.zip"
-RUN unzip images_all.zip
+# RUN wget "https://www.dropbox.com/s/ta98ehmt7c4chvu/images_all.zip"
+# RUN unzip images_all.zip
 
 WORKDIR ../../
+RUN echo "$PWD"
 RUN python3 save_model.py --model yolov4
 
 
