@@ -2,4 +2,4 @@ CONTAINER="as-15"
 
 sudo docker run $CONTAINER
 printf "CONTAINER IS RUNNING"
-python save_model.py --model yolov4
+python3 save_model.py --model yolov4
