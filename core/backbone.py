@@ -163,5 +163,3 @@ def darknet53_tiny(input_data):
     input_data = common.convolutional(input_data, (3, 3, 512, 1024))
 
     return route_1, input_data
-
-

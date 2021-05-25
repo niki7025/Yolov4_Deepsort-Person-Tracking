@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# coding=utrt-8
+# coding=utf-8
 
 import numpy as np
 import tensorflow as tf
@@ -360,8 +360,3 @@ def compute_loss(pred, conv, label, bboxes, STRIDES, NUM_CLASS, IOU_LOSS_THRESH,
     prob_loss = tf.reduce_mean(tf.reduce_sum(prob_loss, axis=[1,2,3,4]))
 
     return giou_loss, conf_loss, prob_loss
-
-
-
-
-

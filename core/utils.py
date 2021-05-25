@@ -339,7 +339,6 @@ def bbox_ciou(bboxes1, bboxes2):
 def nms(bboxes, iou_threshold, sigma=0.3, method='nms'):
     """
     :param bboxes: (xmin, ymin, xmax, ymax, score, class)
-
     Note: soft-nms, https://arxiv.org/pdf/1704.04503.pdf
           https://github.com/bharatsingh430/soft-nms
     """
@@ -383,4 +382,3 @@ def unfreeze_all(model, frozen=False):
     if isinstance(model, tf.keras.Model):
         for l in model.layers:
             unfreeze_all(l, frozen)
-
