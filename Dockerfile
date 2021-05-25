@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/deepstream-l4t:5.1-21.02-base
+FROM nvcr.io/nvidia/l4t-tensorflow:r32.5.0-tf2.3-py3
 # tensorflow deleted from requirements
 RUN echo "Build our Container based on L4T Tensorflow"
 RUN nvcc --version
@@ -37,7 +37,7 @@ RUN pip3 install -U \
 
 # RUN apt-get build-dep python3-matplotlib -y
 WORKDIR /
-RUN git clone https://github.com/niki7025/Yolov4_Deepsort-Person-Tracking.git && cd Yolov4_Deepsort-Person-Tracking && git checkout nikolay_merge_docker_and_main
+RUN git clone https://github.com/niki7025/Yolov4_Deepsort-Person-Tracking.git && cd Yolov4_Deepsort-Person-Tracking && git checkout nikolay_tensorflow
 # RUN echo "$PWD"
 # 
 # RUN git pull
