@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# coding=utrt-8
+# coding=utf-8
 
 import numpy as np
 import tensorrt as trt
