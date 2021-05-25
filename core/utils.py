@@ -2,7 +2,7 @@ import cv2
 import random
 import colorsys
 import numpy as np
-import tensorrt as trt
+import tensorflow as tf
 from core.config import cfg
 
 def load_freeze_layer(model='yolov4', tiny=False):
@@ -49,7 +49,7 @@ def load_weights(model, weights_file, model_name='yolov4', is_tiny=False):
         if i not in output_pos:
             # darknet weights: [beta, gamma, mean, variance]
             bn_weights = np.fromfile(wf, dtype=np.float32, count=4 * filters)
-            # trt weights: [gamma, beta, mean, variance]
+            # tf weights: [gamma, beta, mean, variance]
             bn_weights = bn_weights.reshape((4, filters))[[1, 0, 2, 3]]
             bn_layer = model.get_layer(bn_layer_name)
             j += 1
@@ -59,7 +59,7 @@ def load_weights(model, weights_file, model_name='yolov4', is_tiny=False):
         # darknet shape (out_dim, in_dim, height, width)
         conv_shape = (filters, in_dim, k_size, k_size)
         conv_weights = np.fromfile(wf, dtype=np.float32, count=np.product(conv_shape))
-        # trt shape (height, width, in_dim, out_dim)
+        # tf shape (height, width, in_dim, out_dim)
         conv_weights = conv_weights.reshape(conv_shape).transpose([2, 3, 1, 0])
 
         if i not in output_pos:
@@ -185,14 +185,14 @@ def bbox_iou(bboxes1, bboxes2):
     bboxes1_area = bboxes1[..., 2] * bboxes1[..., 3]
     bboxes2_area = bboxes2[..., 2] * bboxes2[..., 3]
 
-    bboxes1_coor = trt.concat(
+    bboxes1_coor = tf.concat(
         [
             bboxes1[..., :2] - bboxes1[..., 2:] * 0.5,
             bboxes1[..., :2] + bboxes1[..., 2:] * 0.5,
         ],
         axis=-1,
     )
-    bboxes2_coor = trt.concat(
+    bboxes2_coor = tf.concat(
         [
             bboxes2[..., :2] - bboxes2[..., 2:] * 0.5,
             bboxes2[..., :2] + bboxes2[..., 2:] * 0.5,
@@ -200,15 +200,15 @@ def bbox_iou(bboxes1, bboxes2):
         axis=-1,
     )
 
-    left_up = trt.maximum(bboxes1_coor[..., :2], bboxes2_coor[..., :2])
-    right_down = trt.minimum(bboxes1_coor[..., 2:], bboxes2_coor[..., 2:])
+    left_up = tf.maximum(bboxes1_coor[..., :2], bboxes2_coor[..., :2])
+    right_down = tf.minimum(bboxes1_coor[..., 2:], bboxes2_coor[..., 2:])
 
-    inter_section = trt.maximum(right_down - left_up, 0.0)
+    inter_section = tf.maximum(right_down - left_up, 0.0)
     inter_area = inter_section[..., 0] * inter_section[..., 1]
 
     union_area = bboxes1_area + bboxes2_area - inter_area
 
-    iou = trt.math.divide_no_nan(inter_area, union_area)
+    iou = tf.math.divide_no_nan(inter_area, union_area)
 
     return iou
 
@@ -226,14 +226,14 @@ def bbox_giou(bboxes1, bboxes2):
     bboxes1_area = bboxes1[..., 2] * bboxes1[..., 3]
     bboxes2_area = bboxes2[..., 2] * bboxes2[..., 3]
 
-    bboxes1_coor = trt.concat(
+    bboxes1_coor = tf.concat(
         [
             bboxes1[..., :2] - bboxes1[..., 2:] * 0.5,
             bboxes1[..., :2] + bboxes1[..., 2:] * 0.5,
         ],
         axis=-1,
     )
-    bboxes2_coor = trt.concat(
+    bboxes2_coor = tf.concat(
         [
             bboxes2[..., :2] - bboxes2[..., 2:] * 0.5,
             bboxes2[..., :2] + bboxes2[..., 2:] * 0.5,
@@ -241,25 +241,25 @@ def bbox_giou(bboxes1, bboxes2):
         axis=-1,
     )
 
-    left_up = trt.maximum(bboxes1_coor[..., :2], bboxes2_coor[..., :2])
-    right_down = trt.minimum(bboxes1_coor[..., 2:], bboxes2_coor[..., 2:])
+    left_up = tf.maximum(bboxes1_coor[..., :2], bboxes2_coor[..., :2])
+    right_down = tf.minimum(bboxes1_coor[..., 2:], bboxes2_coor[..., 2:])
 
-    inter_section = trt.maximum(right_down - left_up, 0.0)
+    inter_section = tf.maximum(right_down - left_up, 0.0)
     inter_area = inter_section[..., 0] * inter_section[..., 1]
 
     union_area = bboxes1_area + bboxes2_area - inter_area
 
-    iou = trt.math.divide_no_nan(inter_area, union_area)
+    iou = tf.math.divide_no_nan(inter_area, union_area)
 
-    enclose_left_up = trt.minimum(bboxes1_coor[..., :2], bboxes2_coor[..., :2])
-    enclose_right_down = trt.maximum(
+    enclose_left_up = tf.minimum(bboxes1_coor[..., :2], bboxes2_coor[..., :2])
+    enclose_right_down = tf.maximum(
         bboxes1_coor[..., 2:], bboxes2_coor[..., 2:]
     )
 
     enclose_section = enclose_right_down - enclose_left_up
     enclose_area = enclose_section[..., 0] * enclose_section[..., 1]
 
-    giou = iou - trt.math.divide_no_nan(enclose_area - union_area, enclose_area)
+    giou = iou - tf.math.divide_no_nan(enclose_area - union_area, enclose_area)
 
     return giou
 
@@ -277,14 +277,14 @@ def bbox_ciou(bboxes1, bboxes2):
     bboxes1_area = bboxes1[..., 2] * bboxes1[..., 3]
     bboxes2_area = bboxes2[..., 2] * bboxes2[..., 3]
 
-    bboxes1_coor = trt.concat(
+    bboxes1_coor = tf.concat(
         [
             bboxes1[..., :2] - bboxes1[..., 2:] * 0.5,
             bboxes1[..., :2] + bboxes1[..., 2:] * 0.5,
         ],
         axis=-1,
     )
-    bboxes2_coor = trt.concat(
+    bboxes2_coor = tf.concat(
         [
             bboxes2[..., :2] - bboxes2[..., 2:] * 0.5,
             bboxes2[..., :2] + bboxes2[..., 2:] * 0.5,
@@ -292,18 +292,18 @@ def bbox_ciou(bboxes1, bboxes2):
         axis=-1,
     )
 
-    left_up = trt.maximum(bboxes1_coor[..., :2], bboxes2_coor[..., :2])
-    right_down = trt.minimum(bboxes1_coor[..., 2:], bboxes2_coor[..., 2:])
+    left_up = tf.maximum(bboxes1_coor[..., :2], bboxes2_coor[..., :2])
+    right_down = tf.minimum(bboxes1_coor[..., 2:], bboxes2_coor[..., 2:])
 
-    inter_section = trt.maximum(right_down - left_up, 0.0)
+    inter_section = tf.maximum(right_down - left_up, 0.0)
     inter_area = inter_section[..., 0] * inter_section[..., 1]
 
     union_area = bboxes1_area + bboxes2_area - inter_area
 
-    iou = trt.math.divide_no_nan(inter_area, union_area)
+    iou = tf.math.divide_no_nan(inter_area, union_area)
 
-    enclose_left_up = trt.minimum(bboxes1_coor[..., :2], bboxes2_coor[..., :2])
-    enclose_right_down = trt.maximum(
+    enclose_left_up = tf.minimum(bboxes1_coor[..., :2], bboxes2_coor[..., :2])
+    enclose_right_down = tf.maximum(
         bboxes1_coor[..., 2:], bboxes2_coor[..., 2:]
     )
 
@@ -315,22 +315,22 @@ def bbox_ciou(bboxes1, bboxes2):
 
     rho_2 = center_diagonal[..., 0] ** 2 + center_diagonal[..., 1] ** 2
 
-    diou = iou - trt.math.divide_no_nan(rho_2, c_2)
+    diou = iou - tf.math.divide_no_nan(rho_2, c_2)
 
     v = (
         (
-            trt.math.atan(
-                trt.math.divide_no_nan(bboxes1[..., 2], bboxes1[..., 3])
+            tf.math.atan(
+                tf.math.divide_no_nan(bboxes1[..., 2], bboxes1[..., 3])
             )
-            - trt.math.atan(
-                trt.math.divide_no_nan(bboxes2[..., 2], bboxes2[..., 3])
+            - tf.math.atan(
+                tf.math.divide_no_nan(bboxes2[..., 2], bboxes2[..., 3])
             )
         )
         * 2
         / np.pi
     ) ** 2
 
-    alpha = trt.math.divide_no_nan(v, 1 - iou + v)
+    alpha = tf.math.divide_no_nan(v, 1 - iou + v)
 
     ciou = diou - alpha * v
 
@@ -375,12 +375,12 @@ def nms(bboxes, iou_threshold, sigma=0.3, method='nms'):
 
 def freeze_all(model, frozen=True):
     model.trainable = not frozen
-    if isinstance(model, trt.keras.Model):
+    if isinstance(model, tf.keras.Model):
         for l in model.layers:
             freeze_all(l, frozen)
 def unfreeze_all(model, frozen=False):
     model.trainable = not frozen
-    if isinstance(model, trt.keras.Model):
+    if isinstance(model, tf.keras.Model):
         for l in model.layers:
             unfreeze_all(l, frozen)
 
