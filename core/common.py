@@ -1,9 +1,9 @@
 #! /usr/bin/env python
 # coding=utf-8
 
-import tensorrt as trt
+import tensorflow as tf
 # import tensorflow_addons as tfa
-class BatchNormalization(trt.keras.layers.BatchNormalization):
+class BatchNormalization(tf.keras.layers.BatchNormalization):
     """
     "Frozen state" and "inference mode" are two separate concepts.
     `layer.trainable = False` is to freeze the layer, so the layer will use
@@ -12,34 +12,34 @@ class BatchNormalization(trt.keras.layers.BatchNormalization):
     """
     def call(self, x, training=False):
         if not training:
-            training = trt.constant(False)
-        training = trt.logical_and(training, self.trainable)
+            training = tf.constant(False)
+        training = tf.logical_and(training, self.trainable)
         return super().call(x, training)
 
 def convolutional(input_layer, filters_shape, downsample=False, activate=True, bn=True, activate_type='leaky'):
     if downsample:
-        input_layer = trt.keras.layers.ZeroPadding2D(((1, 0), (1, 0)))(input_layer)
+        input_layer = tf.keras.layers.ZeroPadding2D(((1, 0), (1, 0)))(input_layer)
         padding = 'valid'
         strides = 2
     else:
         strides = 1
         padding = 'same'
 
-    conv = trt.keras.layers.Conv2D(filters=filters_shape[-1], kernel_size = filters_shape[0], strides=strides, padding=padding,
-                                  use_bias=not bn, kernel_regularizer=trt.keras.regularizers.l2(0.0005),
-                                  kernel_initializer=trt.random_normal_initializer(stddev=0.01),
-                                  bias_initializer=trt.constant_initializer(0.))(input_layer)
+    conv = tf.keras.layers.Conv2D(filters=filters_shape[-1], kernel_size = filters_shape[0], strides=strides, padding=padding,
+                                  use_bias=not bn, kernel_regularizer=tf.keras.regularizers.l2(0.0005),
+                                  kernel_initializer=tf.random_normal_initializer(stddev=0.01),
+                                  bias_initializer=tf.constant_initializer(0.))(input_layer)
 
     if bn: conv = BatchNormalization()(conv)
     if activate == True:
         if activate_type == "leaky":
-            conv = trt.nn.leaky_relu(conv, alpha=0.1)
+            conv = tf.nn.leaky_relu(conv, alpha=0.1)
         elif activate_type == "mish":
             conv = mish(conv)
     return conv
 
 def mish(x):
-    return x * trt.math.tanh(trt.math.softplus(x))
+    return x * tf.math.tanh(tf.math.softplus(x))
     # return tf.keras.layers.Lambda(lambda x: x*tf.tanh(tf.math.log(1+tf.exp(x))))(x)
 
 def residual_block(input_layer, input_channel, filter_num1, filter_num2, activate_type='leaky'):
@@ -59,9 +59,9 @@ def residual_block(input_layer, input_channel, filter_num1, filter_num2, activat
 #     return residual_output
 
 def route_group(input_layer, groups, group_id):
-    convs = trt.split(input_layer, num_or_size_splits=groups, axis=-1)
+    convs = tf.split(input_layer, num_or_size_splits=groups, axis=-1)
     return convs[group_id]
 
 def upsample(input_layer):
-    return trt.image.resize(input_layer, (input_layer.shape[1] * 2, input_layer.shape[2] * 2), method='bilinear')
+    return tf.image.resize(input_layer, (input_layer.shape[1] * 2, input_layer.shape[2] * 2), method='bilinear')
 
