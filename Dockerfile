@@ -51,7 +51,7 @@ WORKDIR pictures/
 # RUN unzip images_all.zip
 
 WORKDIR ../../
-RUN python3 save_model.py --model yolov4
+RUN OPENBLAS_CORETYPE=ARMV8 python3 save_model.py --model yolov4
 # RUN python3 -c "import tensorrt; print(tensorrt.__version__)"
 
 
