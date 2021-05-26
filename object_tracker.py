@@ -198,7 +198,6 @@ def main(_argv):
 
         #initialize color map
         cmap = plt.get_cmap('tab20b')
-        print("CMAP PRINT: " + cmap)
         colors = [cmap(i)[:3] for i in np.linspace(0, 1, 20)]
 
         # run non-maxima supression
@@ -221,6 +220,7 @@ def main(_argv):
             
         # draw bbox on screen
             color = colors[int(track.track_id) % len(colors)]
+            print("COLOR IMPORTANT !!! - ", color)
             color = [i * 255 for i in color]
             cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), color, 2)
             cv2.rectangle(frame, (int(bbox[0]), int(bbox[1]-30)), (int(bbox[0])+(len(class_name)+len(str(track.track_id)))*17, int(bbox[1])), color, -1)
