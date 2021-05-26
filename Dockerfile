@@ -23,7 +23,7 @@ RUN apt-get update && \
     libjpeg8-dev && \ 
     rm -rf /var/lib/apt/lists/*
 
-RUN OPENBLAS_CORETYPE=ARMV8 python3 pip3 install -U \
+RUN pip3 install -U \
     pip \
     setuptools \
     wheel && \
