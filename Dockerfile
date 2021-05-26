@@ -61,7 +61,7 @@ WORKDIR ../../
 # RUN python3 -c "import tensorrt; print(tensorrt.__version__)"
 
 WORKDIR checkpoints/
-RUN wget "https://www.dropbox.com/s/hd35g86vqpuii9t/yolov4-416.zip"
+RUN wget "https://www.dropbox.com/s/zuv2sq9awowvy61/yolov4-416.zip"
 RUN unzip yolov4-416.zip
 
 WORKDIR ../
