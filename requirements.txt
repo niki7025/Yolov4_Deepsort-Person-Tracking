@@ -5,4 +5,4 @@ absl-py
 easydict
 pillow
 numpy
-
+spicy
