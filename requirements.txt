@@ -6,3 +6,4 @@ easydict
 pillow
 numpy
 matplotlib
+tensorflow==2.1.0
