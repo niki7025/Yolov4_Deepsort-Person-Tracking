@@ -41,7 +41,7 @@ RUN pip3 install -U \
 # RUN apt-get build-dep python3-matplotlib -y
 WORKDIR /
 RUN git clone https://github.com/niki7025/Yolov4_Deepsort-Person-Tracking.git && cd Yolov4_Deepsort-Person-Tracking && git checkout nikolay_tensorflow
-RUN  git clone https://github.com/matplotlib/matplotlib.git && cd matplotlib && git checkout v2.2.x && python3 -m pip install .
+# RUN  git clone https://github.com/matplotlib/matplotlib.git && cd matplotlib && git checkout v2.2.x && python3 -m pip install .
 
 
 # RUN echo "$PWD"
@@ -53,16 +53,16 @@ RUN  git clone https://github.com/matplotlib/matplotlib.git && cd matplotlib && 
 # RUN wget "https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights"
 
 WORKDIR /Yolov4_Deepsort-Person-Tracking/data/pictures/
-# RUN wget "https://www.dropbox.com/s/ta98ehmt7c4chvu/images_all.zip"
-# RUN unzip images_all.zip
+RUN wget "https://www.dropbox.com/s/ta98ehmt7c4chvu/images_all.zip"
+RUN unzip images_all.zip
 
 WORKDIR ../../
 # RUN OPENBLAS_CORETYPE=ARMV8 python3 save_model.py --model yolov4
 # RUN python3 -c "import tensorrt; print(tensorrt.__version__)"
 
 WORKDIR checkpoints/
-# RUN wget "https://www.dropbox.com/s/wmkzbhp1loptxob/yolov4-416.zip"
-# RUN unzip yolov4-416.zip
+RUN wget "https://www.dropbox.com/s/wmkzbhp1loptxob/yolov4-416.zip"
+RUN unzip yolov4-416.zip
 
 WORKDIR ../
 RUN OPENBLAS_CORETYPE=ARMV8 python3 object_tracker.py --pictures_path ./data/pictures/ --output ./outputs/tracker.avi --model yolov4 --dont_show --info

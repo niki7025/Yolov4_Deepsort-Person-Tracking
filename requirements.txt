@@ -5,6 +5,4 @@ absl-py
 easydict
 pillow
 numpy
-libpng12-dev
-pkg-config
-libfreetype6-dev
+scipy
