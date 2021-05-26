@@ -200,7 +200,7 @@ def main(_argv):
         # cmap = plt.get_cmap('tab20b')
         # print(cmap)
         # colors = [cmap(i)[:3] for i in np.linspace(0, 1, 20)]
-        colors = [(240, 52, 52, 1)]
+        # colors = [(240, 52, 52, 1)]
 
         # run non-maxima supression
         boxs = np.array([d.tlwh for d in detections])
@@ -221,8 +221,9 @@ def main(_argv):
             class_name = track.get_class()
             
         # draw bbox on screen
-            color = colors[int(track.track_id) % len(colors)]
-            color = [i * 255 for i in color]
+            # color = colors[int(track.track_id) % len(colors)]
+            # color = [i * 255 for i in color]
+            color = (0.7098039215686275, 0.8117647058823529, 0.4196078431372549)
             cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), color, 2)
             cv2.rectangle(frame, (int(bbox[0]), int(bbox[1]-30)), (int(bbox[0])+(len(class_name)+len(str(track.track_id)))*17, int(bbox[1])), color, -1)
             cv2.putText(frame, class_name + "-" + str(track.track_id),(int(bbox[0]), int(bbox[1]-10)),0, 0.75, (255,255,255),2)
