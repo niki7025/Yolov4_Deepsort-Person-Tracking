@@ -198,7 +198,7 @@ def main(_argv):
 
         #initialize color map
         cmap = plt.get_cmap('tab20b')
-        print(cmap)
+        print("CMAP PRINT: " + cmap)
         colors = [cmap(i)[:3] for i in np.linspace(0, 1, 20)]
 
         # run non-maxima supression
