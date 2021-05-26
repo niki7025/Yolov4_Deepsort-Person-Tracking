@@ -16,7 +16,6 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     python3-pip \
     python3-dev \
-    python3.7 \
     build-essential \
     zlib1g-dev \
     zip \
@@ -24,7 +23,7 @@ RUN apt-get update && \
     libjpeg8-dev && \ 
     rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install -U \
+RUN OPENBLAS_CORETYPE=ARMV8 python3 pip3 install -U \
     pip \
     setuptools \
     wheel && \
@@ -42,6 +41,9 @@ RUN pip3 install -U \
 # RUN apt-get build-dep python3-matplotlib -y
 WORKDIR /
 RUN git clone https://github.com/niki7025/Yolov4_Deepsort-Person-Tracking.git && cd Yolov4_Deepsort-Person-Tracking && git checkout nikolay_tensorflow
+RUN  git clone https://github.com/matplotlib/matplotlib.git && cd matplotlib && git checkout v2.2.x && python3 -m pip install .
+
+
 # RUN echo "$PWD"
 # 
 # RUN git pull
