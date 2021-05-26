@@ -17,7 +17,7 @@ import glob
 from pathlib import Path
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from tensorflow.compat.v1 import ConfigProto
 from tensorflow.compat.v1 import InteractiveSession
 # deep sort imports
@@ -197,9 +197,10 @@ def main(_argv):
         detections = [Detection(bbox, score, class_name, feature) for bbox, score, class_name, feature in zip(bboxes, scores, names, features)]
 
         #initialize color map
-        cmap = plt.get_cmap('tab20b')
-        print(cmap)
-        colors = [cmap(i)[:3] for i in np.linspace(0, 1, 20)]
+        # cmap = plt.get_cmap('tab20b')
+        # print(cmap)
+        # colors = [cmap(i)[:3] for i in np.linspace(0, 1, 20)]
+        colors = [(240, 52, 52, 1)]
 
         # run non-maxima supression
         boxs = np.array([d.tlwh for d in detections])
