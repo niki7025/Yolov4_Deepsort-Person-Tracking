@@ -24,7 +24,7 @@ RUN apt-get update && \
     libjpeg8-dev && \ 
     rm -rf /var/lib/apt/lists/*
 
-RUN OPENBLAS_CORETYPE=ARMV8 python3.7 -m pip install -U \
+RUN pip3 install -U \
     pip \
     setuptools \
     wheel && \
@@ -33,6 +33,8 @@ RUN OPENBLAS_CORETYPE=ARMV8 python3.7 -m pip install -U \
     && \
     rm -rf ~/.cache/pip
 
+ENV MATPLOTLIB_VERSION 2.0.2
+RUN pip install matplotlib==$MATPLOTLIB_VERSION
 
 # RUN apt-get install libhdf5-serial-dev hdf5-tools libhdf5-dev zlib1g-dev zip libjpeg8-dev liblapack-dev libblas-dev gfortran
 # RUN pip3 install -U pip testresources setuptools numpy==1.16.1 future==0.17.1 mock==3.0.5 h5py==2.9.0 keras_preprocessing==1.0.5 keras_applications==1.0.8 gast==0.2.2 futures protobuf pybind11
@@ -61,7 +63,7 @@ WORKDIR checkpoints/
 # RUN unzip yolov4-416.zip
 
 WORKDIR ../
-RUN OPENBLAS_CORETYPE=ARMV8 python3.7 object_tracker.py --pictures_path ./data/pictures/ --output ./outputs/tracker.avi --model yolov4 --dont_show --info
+RUN OPENBLAS_CORETYPE=ARMV8 python3 object_tracker.py --pictures_path ./data/pictures/ --output ./outputs/tracker.avi --model yolov4 --dont_show --info
 
 # ============================================
 # END
