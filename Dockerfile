@@ -61,11 +61,11 @@ WORKDIR ../../
 # RUN python3 -c "import tensorrt; print(tensorrt.__version__)"
 
 WORKDIR checkpoints/
-RUN wget "https://www.dropbox.com/s/wmkzbhp1loptxob/yolov4-416.zip"
+RUN wget "https://www.dropbox.com/s/hd35g86vqpuii9t/yolov4-416.zip"
 RUN unzip yolov4-416.zip
 
 WORKDIR ../
-RUN OPENBLAS_CORETYPE=ARMV8 python3 object_tracker.py --pictures_path ./data/pictures/ --output ./outputs/tracker.avi --model yolov4 --dont_show --info
+RUN OPENBLAS_CORETYPE=ARMV8 python3 object_tracker.py --framework tflite --pictures_path ./data/pictures/ --output ./outputs/tracker.avi --model yolov4 --dont_show --info
 
 # ============================================
 # END
