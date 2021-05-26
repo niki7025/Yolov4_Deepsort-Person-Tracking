@@ -40,7 +40,7 @@ RUN pip3 install -U \
 
 # RUN apt-get build-dep python3-matplotlib -y
 WORKDIR /
-RUN git clone https://github.com/niki7025/Yolov4_Deepsort-Person-Tracking.git && cd Yolov4_Deepsort-Person-Tracking && git checkout nikolay_tensorflow
+RUN git clone https://github.com/niki7025/Yolov4_Deepsort-Person-Tracking.git && cd Yolov4_Deepsort-Person-Tracking && git checkout atanas_tensorflow_v2
 
 
 # RUN echo "$PWD"
