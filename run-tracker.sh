@@ -1,6 +1,6 @@
 CONTAINER="as-15"
 
-#sudo docker run $CONTAINER
+sudo docker run $CONTAINER
 
 CID=$(sudo docker run -d $CONTAINER)
 
