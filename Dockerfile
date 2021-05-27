@@ -36,7 +36,10 @@ WORKDIR /
 RUN git clone https://github.com/niki7025/Yolov4_Deepsort-Person-Tracking.git && cd Yolov4_Deepsort-Person-Tracking && git checkout nikolay_tensorflow
 
 WORKDIR /Yolov4_Deepsort-Person-Tracking/data/pictures/
-RUN wget "https://www.dropbox.com/s/ta98ehmt7c4chvu/images_all.zip"
+# MOT20-04
+# RUN wget "https://www.dropbox.com/s/ta98ehmt7c4chvu/images_all.zip"
+# MOT20-07
+RUN wget "https://www.dropbox.com/s/2dfvimao4tt4nqx/images_all.zip"
 RUN unzip images_all.zip
 
 WORKDIR ../../
