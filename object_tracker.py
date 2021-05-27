@@ -51,7 +51,7 @@ def main(_argv):
     
     # initialize deep sort
     model_filename = 'model_data/mars-small128.pb'
-    encoder = gdet.create_box_encoder(model_filename, batch_size=1)
+    encoder = gdet.create_box_encoder(model_filename, batch_size=8)
     # calculate cosine distance metric
     metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)
     # initialize tracker
