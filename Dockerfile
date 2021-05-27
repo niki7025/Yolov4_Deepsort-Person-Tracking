@@ -45,4 +45,4 @@ RUN wget "https://www.dropbox.com/s/zuv2sq9awowvy61/yolov4-416.zip"
 RUN unzip yolov4-416.zip
 
 WORKDIR ../
-RUN OPENBLAS_CORETYPE=ARMV8 python3 object_tracker.py --framework tflite --pictures_path ./data/pictures/ --output ./outputs/tracker.avi --model yolov4 --dont_show --info
+#RUN OPENBLAS_CORETYPE=ARMV8 python3 object_tracker.py --framework tflite --pictures_path ./data/pictures/ --output ./outputs/tracker.avi --model yolov4 --dont_show --info
