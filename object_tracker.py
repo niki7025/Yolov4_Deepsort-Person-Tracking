@@ -51,7 +51,7 @@ def main(_argv):
     
     # initialize deep sort
     model_filename = 'model_data/mars-small128.pb'
-    encoder = gdet.create_box_encoder(model_filename, batch_size=8)
+    encoder = gdet.create_box_encoder(model_filename, batch_size=1)
     # calculate cosine distance metric
     metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)
     # initialize tracker
@@ -60,6 +60,8 @@ def main(_argv):
     # load configuration for object detector
     config = ConfigProto()
     config.gpu_options.allow_growth = True
+    #limited gpu to 80%
+    config.gpu_options.per_process_gpu_memory_fraction=0.8
     session = InteractiveSession(config=config)
     STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config(FLAGS)
     input_size = FLAGS.size
