@@ -1,8 +1,8 @@
 opencv-python
-tensorflow      
 lxml
 tqdm
 absl-py
 easydict
-matplotlib
 pillow
+numpy
+spicy
