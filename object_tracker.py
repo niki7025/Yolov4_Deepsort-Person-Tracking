@@ -60,8 +60,6 @@ def main(_argv):
     # load configuration for object detector
     config = ConfigProto()
     config.gpu_options.allow_growth = True
-    #limited gpu to 80%
-    config.gpu_options.per_process_gpu_memory_fraction=0.8
     session = InteractiveSession(config=config)
     STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config(FLAGS)
     input_size = FLAGS.size
