@@ -1,1 +1,2 @@
-sudo docker image build -f Dockerfile -t as-15 .
+sudo docker build -t as15_my_img .
+sudo docker run --name my_container as15_my_img
