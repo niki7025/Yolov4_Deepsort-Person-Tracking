@@ -7,7 +7,7 @@ physical_devices = tf.config.experimental.list_physical_devices('GPU')
 print('PHysical devices ', physical_devices)
 if len(physical_devices) > 0:
     print('devices in if ', physical_devices)
-    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+    #tf.config.experimental.set_memory_growth(physical_devices[0], True)
 from absl import app, flags, logging
 from absl.flags import FLAGS
 import core.utils as utils
