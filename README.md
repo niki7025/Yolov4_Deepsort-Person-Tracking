@@ -1,7 +1,7 @@
 # yolov4-deepsort
 
 ## Getting Started
-Navigate to the Yolov4_Deepsort-Person-Tracking folder. Then execute the following commands:
+Open the terminal and navigate to the Yolov4_Deepsort-Person-Tracking folder. Then execute the following commands:
 
 ```
 sh build-docker-image.sh
