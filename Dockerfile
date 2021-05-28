@@ -1,5 +1,5 @@
 FROM nvcr.io/nvidia/l4t-tensorflow:r32.5.0-tf2.3-py3
-# tensorflow deleted from requirements
+
 RUN echo "Build our Container based on L4T Tensorflow"
 RUN nvcc --version
 
@@ -33,7 +33,7 @@ RUN pip3 install -U \
     rm -rf ~/.cache/pip
 
 WORKDIR /
-RUN git clone https://github.com/niki7025/Yolov4_Deepsort-Person-Tracking.git && cd Yolov4_Deepsort-Person-Tracking && git checkout nikolay_tensorflow
+RUN git clone https://github.com/niki7025/Yolov4_Deepsort-Person-Tracking.git && cd Yolov4_Deepsort-Person-Tracking && git checkout atanas_docker_final
 
 WORKDIR /Yolov4_Deepsort-Person-Tracking/data/pictures/
 # MOT20-04
@@ -49,4 +49,3 @@ RUN wget "https://www.dropbox.com/s/zuv2sq9awowvy61/yolov4-416.zip"
 RUN unzip yolov4-416.zip
 
 WORKDIR ../
-# RUN OPENBLAS_CORETYPE=ARMV8 python3 object_tracker.py --framework tflite --pictures_path ./data/pictures/ --output ./outputs/tracker.avi --model yolov4 --dont_show --info --is_output_pictures --weights ./checkpoints/yolov4-416-fp32.tflite --tiny
