@@ -6,7 +6,7 @@ Navigate to the Yolov4_Deepsort-Person-Tracking folder. Then execute the followi
 ```
 sh build-docker-image.sh
 
-sudo docker rung -it as15_my_img
+sudo docker run -it as15_my_img
 
 sh run-tracker.sh
 ``` 
